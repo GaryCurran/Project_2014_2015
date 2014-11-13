@@ -159,8 +159,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DoctorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MedicalQuestionsController.cs" />
+    <Compile Include="Controllers\NursesController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -168,7 +172,7 @@
     <Compile Include="Models\Doctor.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MedicalHistory.cs" />
+    <Compile Include="Models\MedicalQuestion.cs" />
     <Compile Include="Models\MyDBConnection.cs" />
     <Compile Include="Models\Nurse.cs" />
     <Compile Include="Models\Patient.cs" />
@@ -176,12 +180,17 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\act.jpg" />
+    <Content Include="Content\Images\rest.jpg" />
+    <Content Include="Content\Images\room.jpg" />
+    <Content Include="Content\Images\sp.jpg" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -234,6 +243,28 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\Privacy.cshtml" />
+    <Content Include="Views\Doctors\Create.cshtml" />
+    <Content Include="Views\Doctors\Delete.cshtml" />
+    <Content Include="Views\Doctors\Details.cshtml" />
+    <Content Include="Views\Doctors\Edit.cshtml" />
+    <Content Include="Views\Doctors\Index.cshtml" />
+    <Content Include="Views\MedicalQuestions\Create.cshtml" />
+    <Content Include="Views\MedicalQuestions\Delete.cshtml" />
+    <Content Include="Views\MedicalQuestions\Details.cshtml" />
+    <Content Include="Views\MedicalQuestions\Edit.cshtml" />
+    <Content Include="Views\MedicalQuestions\Index.cshtml" />
+    <Content Include="Views\Nurses\Create.cshtml" />
+    <Content Include="Views\Nurses\Delete.cshtml" />
+    <Content Include="Views\Nurses\Details.cshtml" />
+    <Content Include="Views\Nurses\Edit.cshtml" />
+    <Content Include="Views\Nurses\Index.cshtml" />
+    <Content Include="Views\Patients\Create.cshtml" />
+    <Content Include="Views\Patients\Delete.cshtml" />
+    <Content Include="Views\Patients\Details.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
+    <Content Include="Views\Patients\Chart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

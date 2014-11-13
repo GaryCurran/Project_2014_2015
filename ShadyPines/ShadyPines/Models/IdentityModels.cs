@@ -29,5 +29,15 @@ namespace ShadyPines.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ShadyPines.Models.Nurse> Nurses { get; set; }
+
+        public System.Data.Entity.DbSet<ShadyPines.Models.MedicalQuestion> MedicalQuestions { get; set; }
+
+        public System.Data.Entity.DbSet<ShadyPines.Models.Doctor> Doctors { get; set; }
+
+        //public System.Data.Entity.DbSet<ShadyPines.Models.MedicalHistory> MedicalHistories { get; set; }
+
+        public System.Data.Entity.DbSet<ShadyPines.Models.Patient> Patients { get; set; }
     }
 }

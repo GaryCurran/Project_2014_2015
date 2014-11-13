@@ -1,0 +1,127 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using ShadyPines.Models;
+
+namespace ShadyPines.Controllers
+{
+    public class MedicalQuestionsController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: MedicalQuestions
+        public ActionResult Index()
+        {
+            return View(db.MedicalQuestions.ToList());
+        }
+
+        // GET: MedicalQuestions/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
+            if (medicalQuestion == null)
+            {
+                return HttpNotFound();
+            }
+            return View(medicalQuestion);
+        }
+
+        // GET: MedicalQuestions/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: MedicalQuestions/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "MedicalQuestionID,Question1,Question2,NurseTaken,Date")] MedicalQuestion medicalQuestion)
+        {
+            if (ModelState.IsValid)
+            {
+                db.MedicalQuestions.Add(medicalQuestion);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(medicalQuestion);
+        }
+
+        // GET: MedicalQuestions/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
+            if (medicalQuestion == null)
+            {
+                return HttpNotFound();
+            }
+            return View(medicalQuestion);
+        }
+
+        // POST: MedicalQuestions/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "MedicalQuestionID,Question1,Question2,NurseTaken,Date")] MedicalQuestion medicalQuestion)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(medicalQuestion).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(medicalQuestion);
+        }
+
+        // GET: MedicalQuestions/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
+            if (medicalQuestion == null)
+            {
+                return HttpNotFound();
+            }
+            return View(medicalQuestion);
+        }
+
+        // POST: MedicalQuestions/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
+            db.MedicalQuestions.Remove(medicalQuestion);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}
