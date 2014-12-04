@@ -20,11 +20,42 @@ namespace ShadyPines.Controllers
             return View(db.Patients.ToList());
         }
 
-        public ActionResult Chart()
+        public ActionResult Chart(int? id)
         {
+            Patient pt = new Patient();
+
+            MedicalQuestion mq = new MedicalQuestion();
+
+
+            //mq = db.MedicalQuestions.Where(p => p.patientID == id).SingleOrDefault();
+             // temp patient
+            pt = db.Patients.Where(p => p.PatientID == id).SingleOrDefault();
+            ViewBag.name = pt.Name;
+
+            //var count = db.MedicalQuestions.Select(d => d.DailyTotal).Where(d == id).SingleOrDefault();
+                //.Where(p => p.Equals(id));
+
+            var tot = from e in db.MedicalQuestions
+                      where e.patientID == id
+                      select e;
+
+            int size = tot.Count();
+
+            int[] numbers = new int [size];
+            int i = 0;
+            
+            foreach (var item in tot)
+            {
+                numbers[i] = item.DailyTotal;
+                i++;
+            }
+ 
+            //int[] nums = { 2, 4, 6, 8, 10, 12,14 };
+            ViewBag.total = numbers;
+
             return View();
         }
-
+        
         // GET: Patients/Details/5
         public ActionResult Details(int? id)
         {

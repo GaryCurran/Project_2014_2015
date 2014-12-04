@@ -22,6 +22,15 @@
             </div>
         </div>
 
+        @*pass the id of patient back to create post*@
+        <div class="form-group">
+            @Html.LabelFor(Model => Model.patient.PatientID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(Model => Model.patient.PatientID)
+                @Html.HiddenFor(model => Model.patient.PatientID)
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Question2, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

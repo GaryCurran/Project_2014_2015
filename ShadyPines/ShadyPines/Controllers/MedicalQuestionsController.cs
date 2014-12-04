@@ -36,7 +36,7 @@ namespace ShadyPines.Controllers
         }
 
         // GET: MedicalQuestions/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             return View();
         }
@@ -46,13 +46,30 @@ namespace ShadyPines.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "MedicalQuestionID,Question1,Question2,NurseTaken,Date")] MedicalQuestion medicalQuestion)
+        public ActionResult Create([Bind(Include = "MedicalQuestionID,Question1,Question2,NurseTaken,Date")] MedicalQuestion medicalQuestion, int id)
         {
             if (ModelState.IsValid)
             {
+                Patient pt = new Patient();
+
+                pt.PatientID = id;
+
+                // temp patient
+                pt = db.Patients.Where(p => p.PatientID == pt.PatientID).SingleOrDefault();
+
+                
+                medicalQuestion.patientID = id;
+
+                medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1;
+
+                pt.questions.Add(medicalQuestion);
+                ViewBag.name = pt.Name;
+                ViewBag.count = pt.questions.Count();
+                
+
                 db.MedicalQuestions.Add(medicalQuestion);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Patients");
             }
 
             return View(medicalQuestion);
