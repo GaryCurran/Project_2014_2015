@@ -15,16 +15,17 @@ public class MedicalQuestion
         // list of Q's to be asked of patients to access daily health
         // Q's will be a max 10 ??
         // Ask Caroline for her input for relevant Q's
-        [Display(Name = "Question 1")]
+        [Display(Name = "How did the resident sleep last night")]
         public Quest Question1 { get; set; }
 
-        [Display(Name = "Question 2")]
+        [Display(Name = "How's the residents appetite this morning")]
         public Quest Question2 { get; set; }
 
-        [Display(Name = "Nurse")]
+        [Display(Name = "Administrating Nurse")]
         public string NurseTaken { get; set; }
 
-        [Display(Name = "Date")]
+        [Display(Name = "Assessment Date ")]
+        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         public int DailyTotal { get; set; }

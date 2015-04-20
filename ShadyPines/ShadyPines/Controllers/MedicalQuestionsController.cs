@@ -38,7 +38,15 @@ namespace ShadyPines.Controllers
         // GET: MedicalQuestions/Create
         public ActionResult Create(int id)
         {
-            return View();
+            Patient pt = new Patient();
+
+            pt.PatientID = id;
+
+            // temp patient
+            pt = db.Patients.Where(p => p.PatientID == pt.PatientID).SingleOrDefault();
+
+            ViewBag.name = pt.Name;
+            return View(new MedicalQuestion() {Date = DateTime.Now});
         }
 
         // POST: MedicalQuestions/Create
@@ -63,7 +71,7 @@ namespace ShadyPines.Controllers
                 medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1;
 
                 pt.questions.Add(medicalQuestion);
-                ViewBag.name = pt.Name;
+                
                 ViewBag.count = pt.questions.Count();
                 
 

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ShadyPines.Models;
+using System.Web.Helpers;
 
 namespace ShadyPines.Controllers
 {
@@ -22,18 +23,19 @@ namespace ShadyPines.Controllers
 
         public ActionResult Chart(int? id)
         {
+            //Mine
             Patient pt = new Patient();
 
             MedicalQuestion mq = new MedicalQuestion();
 
 
             //mq = db.MedicalQuestions.Where(p => p.patientID == id).SingleOrDefault();
-             // temp patient
+            // temp patient
             pt = db.Patients.Where(p => p.PatientID == id).SingleOrDefault();
             ViewBag.name = pt.Name;
 
             //var count = db.MedicalQuestions.Select(d => d.DailyTotal).Where(d == id).SingleOrDefault();
-                //.Where(p => p.Equals(id));
+            //.Where(p => p.Equals(id));
 
             var tot = from e in db.MedicalQuestions
                       where e.patientID == id
@@ -41,21 +43,41 @@ namespace ShadyPines.Controllers
 
             int size = tot.Count();
 
-            int[] numbers = new int [size];
+            int[] numbers = new int[size];
             int i = 0;
-            
+
             foreach (var item in tot)
             {
                 numbers[i] = item.DailyTotal;
                 i++;
             }
- 
-            //int[] nums = { 2, 4, 6, 8, 10, 12,14 };
-            ViewBag.total = numbers;
 
+            ViewBag.total = numbers;
+            //Mine
             return View();
         }
-        
+
+        public ActionResult MyChart()
+        {
+
+            var bytes = new Chart(width: 400, height: 200)
+
+                .AddSeries(
+
+                    chartType: "bar",
+
+                    xValue: new[] { "Math", "English", "Computer", "Urdu" },
+
+                    yValues: new[] { "60", "70", "68", "100" })
+
+                .GetBytes("png");
+            return File(bytes, "image/png");
+        }
+
+        public ActionResult Show()
+        {
+            return View();
+        }
         // GET: Patients/Details/5
         public ActionResult Details(int? id)
         {

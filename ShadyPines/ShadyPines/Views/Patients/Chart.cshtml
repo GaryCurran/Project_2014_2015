@@ -1,58 +1,74 @@
-﻿@{
-    <h2>ViewBag.Title.</h2>
-    <h3>ViewBag.Message</h3>
-
-    ViewBag.Title = "About";
-    @*int[] n = ViewBag.total;
-
-         int size = n.Length;
-
-         string[] days = new string[size];
-         for (int i = 0; i < n.Length; i++)
-         {
-             days[i] = "Day " + (i + 1);
-             i++;
-         }
-
-         Chart myChart = new Chart(width: 1600, height: 600, theme: ChartTheme.Green)
-
-             .AddTitle("Patient Daily Health Totals ")
-             .AddSeries(
-
-            name: "Employee",
-            legend: "Hello",
-             chartType: "Line",
-
-             xValue:days,
-             yValues:n)
-             .Write();
-
-
-        }*@
-
+﻿<h4>Title</h4>
+@{
+    <h4>Title</h4>
 
     int[] n;
     n = ViewBag.total;
 
+   <h1>ViewBag.name</h1>
     int size = n.Length;
 
+    // length of stay determined by size of array
     string[] days = new string[size];
-    
+
+    // display No. of days on X axis
     for (int i = 0; i < days.Length; i++)
     {
         days[i] = "Day " + (i + 1);
-        
+
     }
+   
+    string myTheme =
 
-    var myChart = new Chart(width: 1700, height: 800, theme: ChartTheme.Green)
-    .AddTitle("Patient Health")
-    .AddSeries(
-        name: "Employee",
+                 @"<Chart BackColor=""#D3DFF0"" BackGradientStyle=""TopBottom"" BorderColor=""181, 64, 1"" BorderWidth=""2"" BorderlineDashStyle=""Solid"" Palette=""BrightPastel"">
+
+  <ChartAreas>
+
+    <ChartArea Name=""Default"" _Template_=""All"" BackColor=""Transparent"" BackSecondaryColor=""White"" BorderColor=""64, 64, 64, 64"" BorderDashStyle=""Solid"" ShadowColor=""Transparent"">
+
+      <AxisY LineColor=""64, 64, 64, 64"">
+
+        <MajorGrid Interval=""Auto"" LineColor=""64, 64, 64, 64"" />
+
+        <LabelStyle Font=""Trebuchet MS, 8.25pt, style=Bold"" />
+
+      </AxisY>
+
+      <AxisX LineColor=""64, 64, 64, 64"">
+
+        <MajorGrid LineColor=""64, 64, 64, 64"" />
+
+        <LabelStyle Font=""Trebuchet MS, 8.25pt, style=Bold"" />
+
+      </AxisX>
+
+      <Area3DStyle Inclination=""15"" IsClustered=""False"" IsRightAngleAxes=""False"" Perspective=""10"" Rotation=""10"" WallWidth=""0"" />
+
+    </ChartArea>
+
+  </ChartAreas>
+
+  <Legends>
+
+    <Legend _Template_=""All"" Alignment=""Center"" BackColor=""Transparent"" Docking=""Bottom"" Font=""Trebuchet MS, 8.25pt, style=Bold"" IsTextAutoFit =""False"" LegendStyle=""Row"">
+
+    </Legend>
+
+  </Legends>
+
+  <BorderSkin SkinStyle=""Emboss"" />
+
+</Chart>";
+        var myChart = new Chart(width: 1700, height: 800, theme: myTheme)
+
+        .AddTitle(ViewBag.name)
+        .AddSeries(
+        name: "Chart",
         chartType: "Line",
-        //xValue: new[] { "Peter", "Andrew", "Julie", "Mary", "Dave" ,"Tom","Steph"},
-        xValue: days,
-        //yValues: new[] { "10", "6", "4", "55", "3" ,"5","9"}
-        yValues:n)
-    .Write();
 
-}
+        xValue:days,
+        yValues:n
+        )
+        .Write();
+
+       }
