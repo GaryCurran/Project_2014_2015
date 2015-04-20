@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ShadyPines.Models
 {
-    public enum NurseLevel { Staff, RGN }
+    public enum NurseLevel { Staff, CNM }
     public class Nurse
     {
         public int NurseID { get; set; }

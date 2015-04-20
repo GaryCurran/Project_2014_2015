@@ -1,6 +1,10 @@
 ﻿@{
     ViewBag.Title = "About";
 }
+<ul class="breadcrumb">
+    <li> @Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="active">About</li>
+</ul>
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 

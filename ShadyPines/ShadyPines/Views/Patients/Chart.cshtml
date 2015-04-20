@@ -1,74 +1,136 @@
-﻿<h4>Title</h4>
-@{
-    <h4>Title</h4>
+﻿@Scripts.Render("~/bundles/jquery")
 
-    int[] n;
-    n = ViewBag.total;
+@model DotNet.Highcharts.Container
 
-   <h1>ViewBag.name</h1>
-    int size = n.Length;
+<ul class="breadcrumb">
+    <li> @Html.ActionLink("Home", "Index", "Home")</li>
 
-    // length of stay determined by size of array
-    string[] days = new string[size];
+    <li> @Html.ActionLink("Resident List", "Index", "Patients")</li>
 
-    // display No. of days on X axis
-    for (int i = 0; i < days.Length; i++)
-    {
-        days[i] = "Day " + (i + 1);
+    <li class="active">Charts</li>
 
-    }
-   
-    string myTheme =
+    <li>@ViewBag.name</li>
+</ul>
 
-                 @"<Chart BackColor=""#D3DFF0"" BackGradientStyle=""TopBottom"" BorderColor=""181, 64, 1"" BorderWidth=""2"" BorderlineDashStyle=""Solid"" Palette=""BrightPastel"">
+<ul class="nav nav-pills">
+    <li class="dropdown">
+        <a aria-expanded="false" class="dropdown-toggle, btn btn-info btn-large" data-toggle="dropdown" href="#">
+            Show Extra Charts <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#" onclick="DrawChart1()">Sleep Patterns</a></li>
+            <li><a href="#" onclick="DrawChart2()">Appetite</a></li>
+            <li><a href="#" onclick="DrawChart3()">Awareness </a></li>
+            <li><a href="#" onclick="DrawChart4()">Resting Position</a></li>
+            <li><a href="#" onclick="DrawChart5()">Falls Observation</a></li>
+            <li class="divider"></li>
+            <li><a href="#" onclick="DrawChart1(); DrawChart2(); DrawChart5(); DrawChart3();DrawChart4()">Show All Charts</a></li>
+            <li> @Html.ActionLink("Hide Extra Charts", "Chart", "Patients")</li>
+        </ul>
+    </li>
+</ul>
+<p>
+    <br />
+</p>
 
-  <ChartAreas>
 
-    <ChartArea Name=""Default"" _Template_=""All"" BackColor=""Transparent"" BackSecondaryColor=""White"" BorderColor=""64, 64, 64, 64"" BorderDashStyle=""Solid"" ShadowColor=""Transparent"">
+@(Model)
+<p>
+    <br />
+</p>
 
-      <AxisY LineColor=""64, 64, 64, 64"">
 
-        <MajorGrid Interval=""Auto"" LineColor=""64, 64, 64, 64"" />
+<ul class="nav nav-tabs">
+    <li class="active"> <a aria-expanded="true" href="#home" data-toggle="tab" style="color:darkblue"<strong>Daily Total</strong></a></li>
+    <li class=""><a aria-expanded="true" href="#sleep" data-toggle="tab" style="color:darkmagenta"<strong>Sleep Pattern</strong></a></li>
+    <li class=""><a aria-expanded="true" href="#app" data-toggle="tab" style="color:orange"<strong>Appetite</strong></a></li>
+    <li class=""><a aria-expanded="true" href="#aware" data-toggle="tab" style="color:brown"<strong>Awareness</strong></a></li>
+    <li class=""><a aria-expanded="true" href="#avg" data-toggle="tab" style="color:green"<strong>Daily Average</strong></a></li>
+    <li class=""><a aria-expanded="true" href="#falls" data-toggle="tab" style="color:brown"<strong>Falls</strong></a></li>
 
-        <LabelStyle Font=""Trebuchet MS, 8.25pt, style=Bold"" />
+</ul>
 
-      </AxisY>
+<div id="myTabContent" class="tab-content">
 
-      <AxisX LineColor=""64, 64, 64, 64"">
+    <div class="tab-pane fade active in" id="home">
+        <p> </p>
+        <p>The daily total, will provide an overall summary of the progress or the decline of the resident.</p>
+        <p>Here we will monitor the residents</p>
+        <ul>
+            <li> Sleep pattern</li>
+            <li> Appetite Level</li>
+            <li> Residents Awareness</li>
+            <li> Daily Average</li>
+            <li> Falls Observations</li>
+        </ul>
+        <p align="justify">
+            Once the Nurse/caregiver, compiles the daily report the resulting scores will be graphed as above, extending over the observation period.This information will provide an invaluable instant visualisation of the progress/decline of the resident. Further
+            more in-depth analysis can be gleaned from the detailed chart views.
+        </p>
+    </div>
 
-        <MajorGrid LineColor=""64, 64, 64, 64"" />
+    <div class="tab-pane fade" id="sleep">
+        <p> </p>
+        <p align="justify">
+            This graph, tells the observer, the quality of the lack thereof of the residents           
+            sleeping patterns. According to the National Sleep Foundation, the required amount of sleep for a person, greater than 70yrs old is on average 5 - 8 hrs. Per night. Extra care should be given to assisting in maintaining a good sleep pattern.
+            A consideration should be given to the amount of rest/sleep taken that day, when reading this graph. In order to facilitate accurate readings residents should be encouraged to leave their room and participate in the planned activities, or gather in the communal areas.
+            To provide a felicitous sleeping environment the bedroom conditions, temperature and lighting should all be set to desired levels.
 
-        <LabelStyle Font=""Trebuchet MS, 8.25pt, style=Bold"" />
+        </p>
+    </div>
+    <div class="tab-pane fade" id="app">
+        <p></p>
+        <p align="justify">
+            During our residents stay, we will endeavour to ensure all in our care follow a healthy eating plan. One of the main factors in appetite loss is social isolation, therefore all residents will be encouraged to eat in the restaurant.
+            Depression, often associated with loss or deterioration of social networks, is a common psychological problem in the elderly and a significant cause of loss of appetite.
+            An understanding of these factors that contribute to poor nutrition in the elderly should enable the development of appropriate preventive and treatment strategies and improve the health of older people.
+        </p>
+    </div>
 
-      </AxisX>
+    <div class="tab-pane fade" id="aware">
+        <p></p>
+        <p align="justify">Awareness in the elderly is a vital indication of overall well-being.A lack of awareness can indicate an early onset of depression, some of the symptoms to be aware of are:</p>
+        <p>
+            <ul>
+                <li>Complaints of aches and pains</li>
+                <li>Fatigue</li>
+                <li>Inability to concentrate</li>
+                <li>Irritability, mood swings or constant complaining; nothing seems to make the person happy</li>
+                <li>Frequent doctor visits without relief in symptoms; all tests come out negative</li>
+            </ul>
+        </p>
+        <p>These are all early warning signs and should be reported if observed. These are some of the early warning signs, but this is not an exhaustive list.</p>
+    </div>
 
-      <Area3DStyle Inclination=""15"" IsClustered=""False"" IsRightAngleAxes=""False"" Perspective=""10"" Rotation=""10"" WallWidth=""0"" />
+    <div class="tab-pane fade" id="avg">
+        <p></p>
+        <p align="justify">
+            The average daily score of the resident will also be graphed. This will give an invaluable early indication of the residents well-being.
+            The average daily score will be a constant occurrence and any severe peaks or troughs will be immediately apparent.
+        </p>
+    </div>
 
-    </ChartArea>
+    <div class="tab-pane fade" id="falls">
+        <p></p>
+        <p align="justify">
+            Falls, particularly those in the elderly can be devastating to the affected individual.In particular, when associated with fracture of the proximal femur, they carry a high morbidity and mortality.
+            Even a seamlessly innocuous fall can  lead to loss of self-confidence and reduced quality of life.
+        </p>
+        <p>Falls are more prevalent in the elderly for two primary reasons:</p>
+        <ul>
+            <li>They are more likely to happen than falls in younger patients</li>
+            <li>They are more likely to result in serious injury; for example:</li>
+            <ul>
+                <li>Wrist fractures (including Colles' fracture and dislocations of the wrist)</li>
+                <li>Fractures of the femur</li>
 
-  </ChartAreas>
+            </ul>
+        </ul>
+        <p align="justify">
+            These injuries apart from the health implications, will have a serious debilitating effect on the residents life. Any resident denied locomotion
+            will be unable to fully participate in all of the designed activities, which will prevent proper interaction with their peers.
+        </p>
+    </div>
+</div>
 
-  <Legends>
-
-    <Legend _Template_=""All"" Alignment=""Center"" BackColor=""Transparent"" Docking=""Bottom"" Font=""Trebuchet MS, 8.25pt, style=Bold"" IsTextAutoFit =""False"" LegendStyle=""Row"">
-
-    </Legend>
-
-  </Legends>
-
-  <BorderSkin SkinStyle=""Emboss"" />
-
-</Chart>";
-        var myChart = new Chart(width: 1700, height: 800, theme: myTheme)
-
-        .AddTitle(ViewBag.name)
-        .AddSeries(
-        name: "Chart",
-        chartType: "Line",
-
-        xValue:days,
-        yValues:n
-        )
-        .Write();
-
-       }

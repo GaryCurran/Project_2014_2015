@@ -422,6 +422,9 @@ jQuery.extend({
 		}
 	},
 
+	credits: {
+	    enabled: false
+	},
 	// Handle when the DOM is ready
 	ready: function( wait ) {
 

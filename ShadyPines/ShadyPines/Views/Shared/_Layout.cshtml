@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
+
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -24,7 +25,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Nurse", "Index", "Nurses")</li>
+                    <li>@Html.ActionLink("Resident List", "Index", "Patients")</li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -35,19 +36,23 @@
         @RenderBody()
         <hr />
         <footer>
-             
+
             <p>
-            | @Html.ActionLink("Privacy", "Privacy", "Home")
-            | @Html.ActionLink("About Us", "About", "Home") 
-            | @Html.ActionLink("Contact Us", "Contact", "Home")
-            | </p>
-        
-            <p>&copy; @DateTime.Now.Year - GC Developments</p>
+                 &copy; @DateTime.Now.Year - GC Developments
+                | @Html.ActionLink("Privacy", "Privacy", "Home")
+                | @Html.ActionLink("About Us", "About", "Home")
+                | @Html.ActionLink("Contact Us", "Contact", "Home")
+                |
+            </p>
+
+            
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
+    <script src="~/Scripts/Highcharts-4.0.1/js/highcharts-all.js"></script>
 </body>
 </html>

@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNet.Highcharts">
+      <HintPath>..\packages\DotNet.Highcharts.4.0\lib\DotNet.Highcharts.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -168,29 +171,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411121455088_InitialCreate.cs" />
-    <Compile Include="Migrations\201411121455088_InitialCreate.Designer.cs">
-      <DependentUpon>201411121455088_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201502251253440_InitialCreate.cs" />
+    <Compile Include="Migrations\201502251253440_InitialCreate.Designer.cs">
+      <DependentUpon>201502251253440_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201411131319039_InitialCreate1.cs" />
-    <Compile Include="Migrations\201411131319039_InitialCreate1.Designer.cs">
-      <DependentUpon>201411131319039_InitialCreate1.cs</DependentUpon>
+    <Compile Include="Migrations\201503251227281_25MAR2015B.cs" />
+    <Compile Include="Migrations\201503251227281_25MAR2015B.Designer.cs">
+      <DependentUpon>201503251227281_25MAR2015B.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412041142575_A-December-04-2014.cs" />
-    <Compile Include="Migrations\201412041142575_A-December-04-2014.Designer.cs">
-      <DependentUpon>201412041142575_A-December-04-2014.cs</DependentUpon>
+    <Compile Include="Migrations\201504010937420_01AprA.cs" />
+    <Compile Include="Migrations\201504010937420_01AprA.Designer.cs">
+      <DependentUpon>201504010937420_01AprA.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412041152187_B-December-04-2014.cs" />
-    <Compile Include="Migrations\201412041152187_B-December-04-2014.Designer.cs">
-      <DependentUpon>201412041152187_B-December-04-2014.cs</DependentUpon>
+    <Compile Include="Migrations\201504161224573_16AprA.cs" />
+    <Compile Include="Migrations\201504161224573_16AprA.Designer.cs">
+      <DependentUpon>201504161224573_16AprA.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412041158035_C-December-04-2014.cs" />
-    <Compile Include="Migrations\201412041158035_C-December-04-2014.Designer.cs">
-      <DependentUpon>201412041158035_C-December-04-2014.cs</DependentUpon>
+    <Compile Include="Migrations\201504161249269_16AprB.cs" />
+    <Compile Include="Migrations\201504161249269_16AprB.Designer.cs">
+      <DependentUpon>201504161249269_16AprB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504162143435_16AprC.cs" />
+    <Compile Include="Migrations\201504162143435_16AprC.Designer.cs">
+      <DependentUpon>201504162143435_16AprC.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Doctor.cs" />
+    <Compile Include="Migrations\Doctor.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MedicalQuestion.cs" />
@@ -205,9 +212,11 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\act.jpg" />
+    <Content Include="Content\Images\act1.jpg" />
     <Content Include="Content\Images\rest.jpg" />
     <Content Include="Content\Images\room.jpg" />
     <Content Include="Content\Images\sp.jpg" />
+    <Content Include="Content\Images\sp1.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -215,6 +224,39 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\adapters\standalone-framework.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\adapters\standalone-framework.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts-3d.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts-3d.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts-all.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts-more.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts-more.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\highcharts.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\canvas-tools.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\canvas-tools.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\data.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\data.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\drilldown.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\drilldown.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\exporting.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\exporting.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\funnel.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\funnel.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\heatmap.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\heatmap.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\no-data-to-display.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\solid-gauge.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\dark-blue.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\dark-green.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\dark-unica.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\gray.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\grid-light.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\grid.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\sand-signika.js" />
+    <Content Include="Scripts\Highcharts-4.0.1\js\themes\skies.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -226,7 +268,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -288,6 +332,7 @@
     <Content Include="Views\Patients\Chart.cshtml" />
     <Content Include="Views\Patients\Show.cshtml" />
     <Content Include="Views\Patients\MyChart.cshtml" />
+    <Content Include="Views\Shared\_HowTosLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -300,20 +345,23 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201411121455088_InitialCreate.resx">
-      <DependentUpon>201411121455088_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201502251253440_InitialCreate.resx">
+      <DependentUpon>201502251253440_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201411131319039_InitialCreate1.resx">
-      <DependentUpon>201411131319039_InitialCreate1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201503251227281_25MAR2015B.resx">
+      <DependentUpon>201503251227281_25MAR2015B.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412041142575_A-December-04-2014.resx">
-      <DependentUpon>201412041142575_A-December-04-2014.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504010937420_01AprA.resx">
+      <DependentUpon>201504010937420_01AprA.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412041152187_B-December-04-2014.resx">
-      <DependentUpon>201412041152187_B-December-04-2014.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504161224573_16AprA.resx">
+      <DependentUpon>201504161224573_16AprA.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412041158035_C-December-04-2014.resx">
-      <DependentUpon>201412041158035_C-December-04-2014.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201504161249269_16AprB.resx">
+      <DependentUpon>201504161249269_16AprB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504162143435_16AprC.resx">
+      <DependentUpon>201504162143435_16AprC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

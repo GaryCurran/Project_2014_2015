@@ -10,7 +10,6 @@ namespace ShadyPines.Models
     {
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Nurse> Nurses { get; set; }
-       
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<MedicalQuestion> MedicalQuestions { get; set; }
         
