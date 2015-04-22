@@ -1,30 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
-using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using DotNet.Highcharts;
-using DotNet.Highcharts.Enums;
-using DotNet.Highcharts.Helpers;
-using DotNet.Highcharts.Options;
 using ShadyPines.Models;
-using Point = DotNet.Highcharts.Options.Point;
+using System.Web.Helpers;
+using DotNet.Highcharts.Options;
+using DotNet.Highcharts.Helpers;
+using DotNet.Highcharts.Enums;
+using System.Drawing;
+using DotNet.Highcharts;
 
 namespace ShadyPines.Controllers
 {
     public class PatientsController : Controller
     {
-        private readonly ApplicationDbContext _db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
-        private static int _passedId;
+        private static int passedID = 0;
         // GET: Patients
         [Authorize]
         public ActionResult Index(string sarchString)
         // public ActionResult Index()
         {
-            var res = from r in _db.Patients select r;
-            if (!string.IsNullOrEmpty(sarchString))
+            var res = from r in db.Patients select r;
+            if (!String.IsNullOrEmpty(sarchString))
             {
                 res = res.Where(s => s.Name.Contains(sarchString));
             }
@@ -34,28 +37,25 @@ namespace ShadyPines.Controllers
 
         public ActionResult All()
         {
-            // ReSharper disable once Mvc.ViewNotResolved
-            return View(_db.Patients.ToList());
+            return View(db.Patients.ToList());
         }
 
- 
-
+        [Authorize]
         public ActionResult Chart(int? id)
         {
 
             //Mine
+            Patient pt = new Patient();
 
-            // ReSharper disable once ObjectCreationAsStatement
-            new MedicalQuestion();
+            MedicalQuestion mq = new MedicalQuestion();
             //mq = db.MedicalQuestions.Where(p => p.patientID == id).SingleOrDefault();
             if (id != null)
             {
-                _passedId = (int)id;
+                passedID = (int)id;
             }
 
             // Patients Details
-            var pt = _db.Patients.SingleOrDefault(p => p.PatientID == _passedId);
-            if (pt == null) throw new ArgumentNullException("id");
+            pt = db.Patients.Where(p => p.PatientID == passedID).SingleOrDefault();
             //pt = db.Patients.Where(p => p.PatientID == id).SingleOrDefault();
             ViewBag.name = pt.Name;
             ViewBag.a = pt.Gender;
@@ -64,16 +64,16 @@ namespace ShadyPines.Controllers
 
             // get all daily scores
             // from DB and transfer to array
-            var tot = from e in _db.MedicalQuestions
+            var tot = from e in db.MedicalQuestions
                       where e.patientID == id
                       select e;
 
 
             // get total amount of objects to set size of object arrays
-            var size = tot.Count();
+            int size = tot.Count();
 
-            var t = new string[size];
-            var pos = 0;
+            string[] t = new string[size];
+            int pos = 0;
             foreach (var it in tot)
             {
                 t[pos] = it.Date.Date.ToShortDateString();
@@ -81,18 +81,18 @@ namespace ShadyPines.Controllers
             }
             //DateTime date1 = new DateTime(2008, 6, 1, 7, 47, 0);
             //DateTime dateOnly = date1.Date;
-            var dy = new string[size];
-            for (var j = 0; j < size; j++)
+            string[] dy = new string[size];
+            for (int j = 0; j < size; j++)
             {
 
-                dy[j] = t[j];
+                dy[j] = t[j].ToString();
 
             }
             // Use total amount of daily reports
             // to size array
             // pass to chart as an object
-            var numbers = new object[size];
-            var i = 0;
+            object[] numbers = new object[size];
+            int i = 0;
 
             // holding the total daily scores
             foreach (var item in tot)
@@ -102,19 +102,19 @@ namespace ShadyPines.Controllers
             }
 
             // Sleep Paterns for period
-            var quest1 = new object[size];
-            var count = 0;
+            object[] quest1 = new object[size];
+            int count = 0;
             foreach (var item in tot)
             {
                 quest1[count] = ((int)item.Question1 + 1) * 2;
                 count++;
             }
 
-            var topSleep = 0;
+            int topSleep = 0;
 
 
 
-            for (var a = 0; a < size; a++)
+            for (int a = 0; a < size; a++)
             {
                 if ((int)quest1[a] > topSleep)
                 {
@@ -122,9 +122,10 @@ namespace ShadyPines.Controllers
                 }
             }
             // calculate fall period
-            var fall = 0;
-            var fell = 0;
-            var noFall = 0;
+            int fall = 0;
+            int fell = 0;
+            int noFall = 0;
+            object[] falls = new object[size];
             foreach (var item in tot)
             {
                 if (item.HasFallen.Equals(true))
@@ -140,25 +141,25 @@ namespace ShadyPines.Controllers
             }
 
             // Fall charts
-            var fallChart = new object[size];
-            var counter = 0;
+            object[] fallChart = new object[size];
+            int counter = 0;
             foreach (var item in tot)
             {
                 if (item.HasFallen.Equals(true))
                 {
-                    fallChart[counter] = -1;
+                    fallChart[counter] = ((int)-1);
                     counter++;
                 }
                 else
                 {
-                    fallChart[counter] = 1;
+                    fallChart[counter] = ((int)1);
                     counter++;
                 }
             }
 
-            var fallChartSeverity = new object[size];
+            object[] fallChartSeverity = new object[size];
 
-            for (var f = 0; f < fallChart.Length; f++)
+            for (int f = 0; f < fallChart.Length; f++)
             {
                 if (fallChart[f].Equals(-1) )
                 {
@@ -169,10 +170,10 @@ namespace ShadyPines.Controllers
                     fallChartSeverity[f] = ((int)fallChart[f]) + (1);
 	            }
             }
-            var didFall = new object[size];
-            var notFall = new object[size];
+            object[] didFall = new object[size];
+            object[] notFall = new object[size];
 
-            for (var b = 0; b < size; b++)
+            for (int b = 0; b < size; b++)
             {
                 if (fallChart[b].Equals(-1))
                 {
@@ -185,8 +186,8 @@ namespace ShadyPines.Controllers
             }
 
             // Appetite for period
-            var quest2 = new object[size];
-            var count2 = 0;
+            object[] quest2 = new object[size];
+            int count2 = 0;
             foreach (var item in tot)
             {
                 quest2[count2] = ((int)item.Question2 + 1) * 2;
@@ -194,8 +195,8 @@ namespace ShadyPines.Controllers
             }
 
             // Appetite for period
-            var quest3 = new object[size];
-            var count3 = 0;
+            object[] quest3 = new object[size];
+            int count3 = 0;
             foreach (var item in tot)
             {
                 quest3[count3] = ((int)item.Question3 + 1) * 2;
@@ -203,28 +204,28 @@ namespace ShadyPines.Controllers
             }
 
             // resting position
-            var quest4 = new object[size];
-            var count4 = 0;
+            object[] quest4 = new object[size];
+            int count4 = 0;
             foreach (var item in tot)
             {
                 quest4[count4] = ((int)item.Question4 + 1) * 2;
                 count4++;
             }
             // length of stay determined by size of array
-            var days = new string[size];
+            string[] days = new string[size];
 
             // display No. of days on X axis
-            for (var j = 0; j < days.Length; j++)
+            for (int j = 0; j < days.Length; j++)
             {
                 days[j] = "Day " + (j + 1);
             }
 
             // create another array to run comparissions
-            var n = numbers;
+            object[] n = numbers;
 
             // sum total daily scores
-            var s = 0;
-            for (var k = 0; k < numbers.Length; k++)
+            int s = 0;
+            for (int k = 0; k < numbers.Length; k++)
             {
                 s += (int)n[k];
             }
@@ -233,10 +234,10 @@ namespace ShadyPines.Controllers
             @ViewBag.avg = s / n.Length;
 
             // avg daily score to pass to graph
-            var avgerageScore = new object[size];
+            object[] avgerageScore = new object[size];
 
             // populate avgerageScore []
-            for (var g = 0; g < days.Length; g++)
+            for (int g = 0; g < days.Length; g++)
             {
                 avgerageScore[g] = @ViewBag.avg;
             }
@@ -245,10 +246,11 @@ namespace ShadyPines.Controllers
             ViewBag.total = numbers;
 
             // total number of days in hospital
+            int d = days.Count();
 
             ////////////////////////////////////////////SUMMARY   CHART  ///////////////////////////////
-            var chart = new Highcharts("chart")
-             .InitChart(new Chart
+            DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("chart")
+             .InitChart(new DotNet.Highcharts.Options.Chart
              {
                  Type = ChartTypes.Line,
                  BorderColor = Color.AliceBlue,
@@ -269,8 +271,14 @@ namespace ShadyPines.Controllers
                     .SetTitle(new Title { Text = "Health Record of " + pt.Name })
                     .SetCredits(new Credits { Enabled = false})
                      .SetSubtitle(new Subtitle { Text = "Observation period from: " + dy[0] + " to: " + dy[dy.Length - 1] })
-                    .SetLegend(new Legend())
-                        .SetLabels(new Labels())
+                    .SetLegend(new Legend
+                    {
+                        
+                    })
+                        .SetLabels(new Labels
+                        {
+
+                        })
                      .SetTooltip(new Tooltip
                      {
                          Shared = true,
@@ -308,13 +316,13 @@ namespace ShadyPines.Controllers
                         Name = "Falls Observation",
                         Data = new Data(new[]
                         {
-                            new Point
+                            new DotNet.Highcharts.Options.Point
                             {
                                 Name = "Days falls occured",
                                 Y = fell,
                                 Color = Color.FromName("Red")
                             },
-                            new Point
+                            new DotNet.Highcharts.Options.Point
                             {
                                 Name = "Days no falls occured" ,
                                 Y = noFall ,
@@ -326,8 +334,8 @@ namespace ShadyPines.Controllers
            });
 
             ///////////////////////////////////////////////FALLS CHART///////////////////////////////////////////////
-            var chart5 = new Highcharts("chart5")
-               .InitChart(new Chart { Type = ChartTypes.Column, 
+            Highcharts chart5 = new Highcharts("chart5")
+               .InitChart(new DotNet.Highcharts.Options.Chart { Type = ChartTypes.Column, 
                    BorderColor = Color.AliceBlue })
                .SetTitle(new Title { Text = "Days when fall occured" })
                 .SetCredits(new Credits { Enabled = false })
@@ -353,11 +361,11 @@ namespace ShadyPines.Controllers
                       new Series {Name = "Days no falls occurred",Color = ColorTranslator.FromHtml ("Green"), Id= " Hello" ,Data = new Data (notFall)}
                     //new Series { Name = "Falls ", Data = new Data(fallChart) }                   
                 })
-                .InFunction("DrawChart5");
+                .InFunction("DrawChart5"); ;
 
             ////////////////////////////////////////////SLEEP PATTERN QUESTION  CHART  ///////////////////////////////
-            var chart1 = new Highcharts("chart1")
-            .InitChart(new Chart { Type = ChartTypes.Spline })
+            Highcharts chart1 = new Highcharts("chart1")
+            .InitChart(new DotNet.Highcharts.Options.Chart { Type = ChartTypes.Spline })
                .SetTitle(new Title { Text = "Sleep Patterns" })
                 .SetCredits(new Credits { Enabled = false })
                .SetSubtitle(new Subtitle { Text = "Observation period from: " + dy[0] + " to: " + dy[dy.Length - 1] })
@@ -441,8 +449,8 @@ namespace ShadyPines.Controllers
 
             ////////////////////////////////////////////APPETITE LEVEL QUESTION  CHART  ///////////////////////////////
 
-            var chart2 = new Highcharts("chart2")
-           .InitChart(new Chart { Type = ChartTypes.Scatter })
+            Highcharts chart2 = new Highcharts("chart2")
+           .InitChart(new DotNet.Highcharts.Options.Chart { Type = ChartTypes.Scatter })
               .SetTitle(new Title { Text = "Appetite Levels" })
                .SetCredits(new Credits { Enabled = false })
               .SetSubtitle(new Subtitle { Text = "Observation period from: " + dy[0] + " to: " + dy[dy.Length - 1] })
@@ -526,8 +534,8 @@ namespace ShadyPines.Controllers
 
             ////////////////////////////////////////////AWARENESS QUESTION  CHART  ///////////////////////////////
 
-            var chart3 = new Highcharts("chart3")
-            .InitChart(new Chart { Type = ChartTypes.Spline })
+            Highcharts chart3 = new Highcharts("chart3")
+            .InitChart(new DotNet.Highcharts.Options.Chart { Type = ChartTypes.Spline })
                .SetTitle(new Title { Text = "Resident Awareness" })
                 .SetCredits(new Credits { Enabled = false })
                .SetSubtitle(new Subtitle { Text = "Observation period from: " + dy[0] + " to: " + dy[dy.Length - 1] })
@@ -610,8 +618,8 @@ namespace ShadyPines.Controllers
 
             ////////////////////////////////////////////RESTING POSITION QUESTION  CHART  ///////////////////////////////
 
-            var chart4 = new Highcharts("chart4")
-             .InitChart(new Chart { Type = ChartTypes.Scatter })
+            Highcharts chart4 = new Highcharts("chart4")
+             .InitChart(new DotNet.Highcharts.Options.Chart { Type = ChartTypes.Scatter })
                 .SetTitle(new Title { Text = "Resting Position" })
                  .SetCredits(new Credits { Enabled = false })
                 .SetSubtitle(new Subtitle { Text = "Observation period from: " + dy[0] + " to: " + dy[dy.Length - 1] })
@@ -697,9 +705,23 @@ namespace ShadyPines.Controllers
 
             // traverse the array to find lowest & highest score
 
-            var bestDay = numbers.Cast<int>().Concat(new[] {0}).Max();
+            int bestDay = 0;
+            int worstDay = 1000;
+            for (int j = 0; j < numbers.Length; j++)
+            {
+                if ((int)numbers[j] > bestDay)
+                {
+                    bestDay = (int)numbers[j];
+                }
+            }
 
-            var worstDay = numbers.Cast<int>().Concat(new[] {1000}).Min();
+            for (int j = 0; j < numbers.Length; j++)
+            {
+                if ((int)numbers[j] < worstDay)
+                {
+                    worstDay = (int)numbers[j];
+                }
+            }
             @ViewBag.worst = worstDay;
             @ViewBag.best = bestDay;
 
@@ -719,7 +741,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var patient = _db.Patients.Find(id);
+            Patient patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound();
@@ -742,8 +764,8 @@ namespace ShadyPines.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Patients.Add(patient);
-                _db.SaveChanges();
+                db.Patients.Add(patient);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -757,7 +779,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var patient = _db.Patients.Find(id);
+            Patient patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound();
@@ -774,8 +796,8 @@ namespace ShadyPines.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Entry(patient).State = EntityState.Modified;
-                _db.SaveChanges();
+                db.Entry(patient).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(patient);
@@ -788,7 +810,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var patient = _db.Patients.Find(id);
+            Patient patient = db.Patients.Find(id);
             if (patient == null)
             {
                 return HttpNotFound();
@@ -801,9 +823,9 @@ namespace ShadyPines.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var patient = _db.Patients.Find(id);
-            _db.Patients.Remove(patient);
-            _db.SaveChanges();
+            Patient patient = db.Patients.Find(id);
+            db.Patients.Remove(patient);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -811,7 +833,7 @@ namespace ShadyPines.Controllers
         {
             if (disposing)
             {
-                _db.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

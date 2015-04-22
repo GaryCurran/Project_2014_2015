@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using ShadyPines.Models;
+using System.Collections;
 
 namespace ShadyPines.Controllers
 {
     public class MedicalQuestionsController : Controller
     {
-        private readonly ApplicationDbContext _db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: MedicalQuestions
         public ActionResult Index()
         {
-            return View(_db.MedicalQuestions.ToList());
+            return View(db.MedicalQuestions.ToList());
         }
 
         // GET: MedicalQuestions/Details/5
@@ -25,7 +28,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var medicalQuestion = _db.MedicalQuestions.Find(id);
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
             if (medicalQuestion == null)
             {
                 return HttpNotFound();
@@ -36,13 +39,21 @@ namespace ShadyPines.Controllers
         // GET: MedicalQuestions/Create
         public ActionResult Create(int id)
         {
-            var pt = new Patient {PatientID = id};
+            Patient pt = new Patient();
 
+            pt.PatientID = id;
 
+            //ArrayList nList = new ArrayList();
 
+            //var n = from name in db.Nurses select name;
 
-            var nurs = new List<SelectListItem>();
-            var n = from name in _db.Nurses select name;
+            //foreach (var item in n)
+            //{
+            //    nList.Add(item.Name);
+            //}
+
+            List <SelectListItem> nurs = new List<SelectListItem>();
+            var n = from name in db.Nurses select name;
 
             foreach (var item in n)
             {
@@ -50,10 +61,10 @@ namespace ShadyPines.Controllers
             }
 
             // temp patient
-            pt = _db.Patients.SingleOrDefault(p => p.PatientID == pt.PatientID);
+            pt = db.Patients.Where(p => p.PatientID == pt.PatientID).SingleOrDefault();
 
             ViewBag.nurses = nurs;
-            if (pt != null) ViewBag.name = pt.Name;
+            ViewBag.name = pt.Name;
             return View(new MedicalQuestion() {Date = DateTime.Now});
         }
 
@@ -64,46 +75,49 @@ namespace ShadyPines.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "MedicalQuestionID,HasFallen,Question1,Question2,Question3,Question4,Question5,Question6,Question7,Question8,Question9,NurseEn,Date")] MedicalQuestion medicalQuestion, int id)
         {
-            if (!ModelState.IsValid) return View(medicalQuestion);
-            var pt = new Patient {PatientID = id};
+            if (ModelState.IsValid)
+            {
+                Patient pt = new Patient();
+                
+              
+                pt.PatientID = id;
 
-
-
-            // temp patient
-            pt = _db.Patients.SingleOrDefault(p => p.PatientID == pt.PatientID);
+                // temp patient
+                pt = db.Patients.Where(p => p.PatientID == pt.PatientID).SingleOrDefault();
 
                 
-            medicalQuestion.patientID = id;
-            if (medicalQuestion.HasFallen.Equals (true))
-            {
-                medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1
-                                             + (int)medicalQuestion.Question3 + 1 + (int)medicalQuestion.Question4 + 1+
-                                             (int)medicalQuestion.Question5 + 1 + (int)medicalQuestion.Question6 + 1
-                                             + (int)medicalQuestion.Question7 + 1 + (int)medicalQuestion.Question8 + 1 + (int)medicalQuestion.Question9 + 1;
+                medicalQuestion.patientID = id;
+                if (medicalQuestion.HasFallen.Equals (true))
+                {
+                    medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1
+                                                               + (int)medicalQuestion.Question3 + 1 + (int)medicalQuestion.Question4 + 1+
+                                                               (int)medicalQuestion.Question5 + 1 + (int)medicalQuestion.Question6 + 1
+                                                               + (int)medicalQuestion.Question7 + 1 + (int)medicalQuestion.Question8 + 1 + (int)medicalQuestion.Question9 + 1;
 
-                var helper = medicalQuestion.DailyTotal / 2;
-                medicalQuestion.DailyTotal += helper;
-            }
-            else
-            {
-                medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1
-                                             + (int)medicalQuestion.Question3 + 1 + (int)medicalQuestion.Question4 + 1 +
-                                             (int)medicalQuestion.Question5 + 1 + (int)medicalQuestion.Question6 + 1
-                                             + (int)medicalQuestion.Question7 + 1 + (int)medicalQuestion.Question8 + 1 + (int)medicalQuestion.Question9 + 1;
-            }
+                    int helper = medicalQuestion.DailyTotal / 2;
+                    medicalQuestion.DailyTotal += helper;
+                }
+                else
+                {
+                    medicalQuestion.DailyTotal = (int)medicalQuestion.Question1 + 1 + (int)medicalQuestion.Question2 + 1
+                                                               + (int)medicalQuestion.Question3 + 1 + (int)medicalQuestion.Question4 + 1 +
+                                                               (int)medicalQuestion.Question5 + 1 + (int)medicalQuestion.Question6 + 1
+                                                               + (int)medicalQuestion.Question7 + 1 + (int)medicalQuestion.Question8 + 1 + (int)medicalQuestion.Question9 + 1;
+                }
+                
+                
 
-
-            if (pt != null)
-            {
                 pt.questions.Add(medicalQuestion);
                 
                 ViewBag.count = pt.questions.Count();
+                
+
+                db.MedicalQuestions.Add(medicalQuestion);
+                db.SaveChanges();
+                return RedirectToAction("Index", "Patients");
             }
 
-
-            _db.MedicalQuestions.Add(medicalQuestion);
-            _db.SaveChanges();
-            return RedirectToAction("Index", "Patients");
+            return View(medicalQuestion);
         }
 
         // GET: MedicalQuestions/Edit/5
@@ -113,7 +127,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var medicalQuestion = _db.MedicalQuestions.Find(id);
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
             if (medicalQuestion == null)
             {
                 return HttpNotFound();
@@ -130,8 +144,8 @@ namespace ShadyPines.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Entry(medicalQuestion).State = EntityState.Modified;
-                _db.SaveChanges();
+                db.Entry(medicalQuestion).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(medicalQuestion);
@@ -144,7 +158,7 @@ namespace ShadyPines.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var medicalQuestion = _db.MedicalQuestions.Find(id);
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
             if (medicalQuestion == null)
             {
                 return HttpNotFound();
@@ -157,9 +171,9 @@ namespace ShadyPines.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var medicalQuestion = _db.MedicalQuestions.Find(id);
-            _db.MedicalQuestions.Remove(medicalQuestion);
-            _db.SaveChanges();
+            MedicalQuestion medicalQuestion = db.MedicalQuestions.Find(id);
+            db.MedicalQuestions.Remove(medicalQuestion);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -167,7 +181,7 @@ namespace ShadyPines.Controllers
         {
             if (disposing)
             {
-                _db.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }
